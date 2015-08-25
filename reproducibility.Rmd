@@ -1,5 +1,5 @@
 ---
-title: "reproducibility"
+title: "Multivariate Analyses using Rmarkdown"
 author: "Lisa Cohen"
 date: "August 25, 2015"
 output: html_document
@@ -9,14 +9,37 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r}
-summary(cars)
+```{r,echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(seed=4)
 ```
 
-You can also embed plots, for example:
-
-```{r, echo=FALSE}
-plot(cars)
+```{r,echo=FALSE, message=FALSE, warning=FALSE}
+# these are the libraries we will use:
+library(RCurl)
+library(ggplot2)
+library(vegan)
+library(devtools)
+# run these:
+URL<-("https://raw.githubusercontent.com/ryanjw/ngs-3rdweek/master/visualizations/datasets/fly_data.txt")
+dataset<-read.table(textConnection(getURL(URL)),header=T,check.names=F,sep="\t")
+head(dataset[,1:10])
 ```
 
+Let's look at one transcript "FBgn0000022", color by fly 
+```{r,echo=FALSE, message=FALSE, warning=FALSE}
+# don't run tests, because it is computationally intense and might crash 
+# let's look at it first
+# just insert one of the transcripts,
+# color by fly type "fly"
+# set alpha to 0.
+ggplot(dataset)+geom_density(aes(x=FBgn0000022,fill=fly,alpha=0.5))
+```
+
+Then, histogram of same transcript "FBgn0000022", color by fly
+```{r,echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(dataset)+geom_histogram(aes(x=FBgn0000022,fill=fly,alpha=0.5))
+# discrete bins of 
+names(dataset)[1:50]
+ggplot(dataset)+geom_histogram(aes(x=FBgn0000056,fill=fly,alpha=0.5),binwidth=100)
+```
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
